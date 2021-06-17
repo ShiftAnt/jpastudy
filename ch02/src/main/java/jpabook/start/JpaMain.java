@@ -7,8 +7,9 @@ import javax.persistence.Persistence;
 import java.util.List;
 
 public class JpaMain {
+    private static EntityManagerFactory emf
+            = Persistence.createEntityManagerFactory("jpabook");
     public static void main(String[] args) {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpabook");
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
 
@@ -49,4 +50,60 @@ public class JpaMain {
 
         em.remove(member);
     }
+
+    /* 영속성 해제 */
+    private void closeEntityManager(EntityManager em, EntityTransaction transaction) {
+        transaction.begin();
+
+        Member memberA = em.find(Member.class, "memberA");
+        Member memberB = em.find(Member.class, "memberB");
+
+        transaction.commit();
+
+        /* 영속성 컨텍스트가 종료되어 더는 memberA, memberB가 관리되지 않음
+         * 주로 영속성 컨텍스트가 종료되면서 준영속 상태가 됨
+         * 개발자가 직접 detach()로 준영속 상태로 만드는 경우는 드뭄
+         */
+        em.close();
+    }
+
+    /* 준영속 상태의 엔티티를 영속 상태로 변환 */
+    private void restoreEntityDetachToPersist() {
+
+        /* 영속성 컨텍스트를 .close() 하고 반환했으므로 member는 준영속 상태 */
+        Member member = createMember("member1", "회원1");
+
+        member.setUsername("회원명변경"); //현재 member는 준영속 상태
+    }
+
+    private Member createMember(String id, String username) {
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        transaction.begin();
+
+        Member member = new Member();
+        member.setId(id);
+        member.setUsername(username);
+
+        em.persist(member);
+        transaction.commit();
+
+        em.close(); // 영속성 컨텍스트가 종료되고 member 엔티티는 준영속 상태가 됨
+
+        return member;
+    }
+
+    private void mergeMember(Member member) {
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+
+        transaction.begin();
+
+        /* member 엔티티는 그대로 준영속 상태이고 새로운 영속 상태의 객체를 반환함*/
+        Member mergeMember = em.merge(member);
+        transaction.commit();
+
+        em.close();
+    }
+
 }
