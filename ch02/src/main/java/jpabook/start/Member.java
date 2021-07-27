@@ -53,6 +53,19 @@ public class Member {
     @Transient
     private Integer temp;
 
+
+    /*
+    * 일대다, 다대일 관계에서는 항상 다 쪽이 외래키를 가짐 @ManyToOne은 항상 연관관계의 주인이 되므로
+    mappedBy 속성을 사용할 우 없고 존재하지도 않는다.
+     */
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID")
+    private Team team;
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
     public String getId() {
         return id;
     }

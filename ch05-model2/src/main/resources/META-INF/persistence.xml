@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.1">
+    
+    <persistence-unit name="jpabook">
+        <class>jpabook.model.entity.Member</class>
+        <class>jpabook.model.entity.Order</class>
+        <class>jpabook.model.entity.OrderItem</class>
+        <class>jpabook.model.entity.OrderStatus</class>
+        <class>jpabook.model.entity.Item</class>
+        <properties>
+        <!-- 필수 -->
+        <!-- JPA 표준 속성 -->
+            <!-- JDBC 드라이버 -->
+            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
+            <!-- DB 접속 아이디 -->
+            <property name="javax.persistence.jdbc.user" value="sa"/>
+            <!-- DB 접속 비밀번호 -->
+            <property name="javax.persistence.jdbc.password" value=""/>
+            <!-- DB 접속 URL -->
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:tcp://localhost/~/test"/>
+
+        <!-- 하이버네이트 속성 -->
+            <!-- 방언 설정 -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+
+        <!-- 옵션 -->
+            <!-- 실행한 SQL 출력 -->
+            <property name="hibernate.show_sql" value="true"/>
+            <!-- SQL 출력 시 보기 쉽게 정렬 -->
+            <property name="hibernate.format_sql" value="true"/>
+            <!-- 쿼리 출력 시 주석도 함께 출력 -->
+            <property name="hibernate.use_sql_comments" value="true"/>
+            <!-- JPA 표준에 맞게 새로운 키 생성 전략 사용 -->
+            <property name="hibernate.id.new_generator_mappings" value="true"/>
+            <!-- 애플리케이션 실행 시점에 DB 테이블 자동 생성 -->
+            <!-- value Option
+                create: 기존 테이블을 삭제 후 새로 생성
+                create-drop: create 속성에 추가로 애플리케이션을 종료할 때 생성한 DDL 제거
+                update: 데이터베이스의 테이블 엔티티 매핑정보를 비교해서 변경 사항만 수정
+                validate: 데이터베이스 테이블과 엔티티 매핑정보를 비교해서 차이가 있으면 경고를 남기고 애플리 케이션을 실행하지 않음
+                none: 자동 생성 기능을 사용하지 않을 때 (property를 삭제하는 것과 같음) -->
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <!-- 테이블 명 또는 컬럼 명이 생략되었을 때 자바의 Camel 표기법을 테이블의 Snake 표기법으로 바꿈 -->
+            <property name="hibernate.ejb.naming_strategy" value="org.hibernate.cfg.ImprovedNamingStrategy"/>
+        </properties>
+    </persistence-unit>
+</persistence>

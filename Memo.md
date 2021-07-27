@@ -105,3 +105,40 @@
 
    `@GeneratedValue.strategy`의 기본 값 `@GeneratedValue`만 쓰는 것과 동일함
 
+
+
+## 5. 연관관계 매핑 기초
+
+### 5.4 연관관계 주인
+
+* 연관관계 주인은 mappedBy를 사용하지 않음
+* 주인이 아니면 mappedBy 속성을 사용해 속성의 값으로 연관관계의 주인을 지정해야함
+
+* 참고
+  * DB 테이블의 다대일, 일대다 관계에서는 항상 다 쪽이 외래키를 가짐
+  * 다 쪽인 `@ManyToOne` 은 항상 연관관계의 주인이 되므로 mappedBy를 설정할 수 없음
+  * 따라서 ManyToOne에는 mappedBy 속성이 없음
+
+
+
+### 5.5 양방향 연관관계 저장
+
+* 연관관계의 주인인이 외래 키를 관리하므로 주인이 아닌 방향에서 값을 설정하더라도 반영되지 않음
+
+  ```java
+  class Member {
+    /* 생략 */
+    @ManyToOne
+    private Team team;
+  }
+  class Team {
+    /* 생략 */
+    @OneToMany(mappedBy = "team")
+    List<Member> members = new ArrayList<>();
+  }
+  ...
+    
+  team.getMembers().add(member);	// 연관관계의 주인이 아니므로 반영되지 않음
+  ```
+
+  

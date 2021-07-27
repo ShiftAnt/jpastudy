@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+}
+
+group 'org.jpabook'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // JPA, 하이버네이트
+    implementation 'org.hibernate:hibernate-entitymanager:4.3.10.Final'
+    // H2 데이터베이스 (210616 기준 최신, 홈페이지에서도 최신 버전 받음)
+    implementation 'com.h2database:h2:1.4.200'
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+test {
+    useJUnitPlatform()
+}
